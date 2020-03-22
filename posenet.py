@@ -47,10 +47,10 @@ class Person:
 
 
 class PoseNet:
-  def __init__(self, model_path, image_path):
+  def __init__(self, model_path, image):
     self.input_mean = 127.5
     self.input_std = 127.5
-    self.image_path = image_path
+    self.image = image
     self.image_width = 0
     self.image_height = 0
     self.interpreter = tf.lite.Interpreter(model_path=model_path)
@@ -65,7 +65,7 @@ class PoseNet:
 
   def load_input_image(self):
     height, width = self.input_details[0]['shape'][1], self.input_details[0]['shape'][2]
-    input_image = Image.open(self.image_path)
+    input_image = self.image
     self.image_width, self.image_height = input_image.size
     print('width, height = (', self.image_width, ',', self.image_height, ')')
     resize_image = input_image.resize((width, height))
