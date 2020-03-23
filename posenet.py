@@ -57,8 +57,8 @@ class PoseNet:
     self.interpreter.allocate_tensors()
     self.input_details = self.interpreter.get_input_details()
     self.output_details = self.interpreter.get_output_details()
-    print('input_details : ', self.input_details)
-    print('output_details : ', self.output_details)
+    # print('input_details : ', self.input_details)
+    # print('output_details : ', self.output_details)
 
   def sigmoid(self, x):
     return 1. / (1. + math.exp(-x))
@@ -86,8 +86,8 @@ class PoseNet:
 
     heat_maps = self.interpreter.get_tensor(self.output_details[0]['index'])
     offset_maps = self.interpreter.get_tensor(self.output_details[1]['index'])
-    print('heat_maps shape=', heat_maps.shape)
-    print('offset_maps shape=', offset_maps.shape)
+    # print('heat_maps shape=', heat_maps.shape)
+    # print('offset_maps shape=', offset_maps.shape)
 
     height = len(heat_maps[0])
     width = len(heat_maps[0][0])
@@ -120,7 +120,7 @@ class PoseNet:
       x_coords[i] = (position[1] / float(width - 1) * self.image_width +
                      offset_maps[0][position_y][position_x][i + num_key_points])
       confidenceScores[i] = heat_maps[0][position_y][position_x][i]
-      print("confidenceScores[", i, "] = ", confidenceScores[i])
+      # print("confidenceScores[", i, "] = ", confidenceScores[i])
 
     person = Person()
     key_point_list = []

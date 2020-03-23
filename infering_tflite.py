@@ -3,9 +3,12 @@ import cv2
 import numpy as np
 import posenet
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('test_video2.mp4')
 
 MIN_CONFIDENCE = 0.40
+frame_counter=0
+key_point_holder = {}
+final_list_of_keypoints=[]
 
 if __name__ == '__main__':
 	body_joints = [[posenet.BodyPart.LEFT_WRIST, posenet.BodyPart.LEFT_ELBOW],
@@ -38,7 +41,7 @@ if __name__ == '__main__':
 
 			if person.keyPoints[line[0].value[0]].score > MIN_CONFIDENCE and person.keyPoints[line[1].value[0]].score > MIN_CONFIDENCE:
 				start_point_x, start_point_y = int(person.keyPoints[line[0].value[0]].position.x), int(person.keyPoints[line[0].value[0]].position.y)
-				print(person.keyPoints[line[0].value[0]].position.x, person.keyPoints[line[0].value[0]].position.y)
+				# print(person.keyPoints[line[0].value[0]].position.x, person.keyPoints[line[0].value[0]].position.y)
 				end_point_x, end_point_y = int(person.keyPoints[line[1].value[0]].position.x), int(person.keyPoints[line[1].value[0]].position.y)
 				draw.line((start_point_x, start_point_y, end_point_x, end_point_y),
 				          fill=(255, 255, 0), width=3)
@@ -49,14 +52,23 @@ if __name__ == '__main__':
 				right_bottom_x, right_bottom_y = int(key_point.position.x) + 5, int(key_point.position.y) + 5
 				draw.ellipse((left_top_x, left_top_y, right_bottom_x, right_bottom_y),
 				             fill=(0, 128, 0), outline=(255, 255, 0))
+				centre_x = (left_top_x+right_bottom_x)//2
+				centre_y = (left_top_y+right_bottom_y)//2
+				print(centre_x, centre_y, str(key_point.bodyPart)[9:])
+				# key_point_holder['{}'.format(key_point.BodyPart)]
 
-		print('total score : ', person.score)
+		# print('total score : ', person.score)
 
 		image = image.resize((600,600))
 		image = np.array(image)
+		frame_counter = frame_counter + 1
+		print(frame_counter)
+		print('#####################')
 		# image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 		# image.save("./result.png")
 		cv2.imshow('Result', image)
 		k = cv2.waitKey(27)
 		if k == ord('q'):
 			break
+
+	print(frame_counter)
