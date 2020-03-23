@@ -67,7 +67,7 @@ class PoseNet:
     height, width = self.input_details[0]['shape'][1], self.input_details[0]['shape'][2]
     input_image = self.image
     self.image_width, self.image_height = input_image.size
-    print('width, height = (', self.image_width, ',', self.image_height, ')')
+    #print('width, height = (', self.image_width, ',', self.image_height, ')')
     resize_image = input_image.resize((width, height))
     return np.expand_dims(resize_image, axis=0)
 
@@ -82,7 +82,7 @@ class PoseNet:
     start_time = time.time()
     self.interpreter.invoke()
     end_time = time.time()
-    print("time spent:", ((end_time - start_time) * 1000))
+    #print("time spent:", ((end_time - start_time) * 1000))
 
     heat_maps = self.interpreter.get_tensor(self.output_details[0]['index'])
     offset_maps = self.interpreter.get_tensor(self.output_details[1]['index'])

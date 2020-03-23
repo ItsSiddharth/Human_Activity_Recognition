@@ -32,11 +32,13 @@ if __name__ == '__main__':
 		Posenet = posenet.PoseNet(model_path="./posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite",
 		                          image=image)
 		person = Posenet.estimate_pose()
+		# print((len(person.keyPoints)))
 
 		for line in body_joints:
 
 			if person.keyPoints[line[0].value[0]].score > MIN_CONFIDENCE and person.keyPoints[line[1].value[0]].score > MIN_CONFIDENCE:
 				start_point_x, start_point_y = int(person.keyPoints[line[0].value[0]].position.x), int(person.keyPoints[line[0].value[0]].position.y)
+				print(person.keyPoints[line[0].value[0]].position.x, person.keyPoints[line[0].value[0]].position.y)
 				end_point_x, end_point_y = int(person.keyPoints[line[1].value[0]].position.x), int(person.keyPoints[line[1].value[0]].position.y)
 				draw.line((start_point_x, start_point_y, end_point_x, end_point_y),
 				          fill=(255, 255, 0), width=3)
