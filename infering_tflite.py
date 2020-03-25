@@ -29,7 +29,7 @@ def Key_Point_Generator(image):
 
 	Posenet = posenet.PoseNet(model_path="./posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite",
 		                          image=image)
-	person = Posenet.estimate_pose()
+	person, heatmaps = Posenet.estimate_pose()
 		# print((len(person.keyPoints)))
 
 	for line in body_joints:
@@ -56,4 +56,4 @@ def Key_Point_Generator(image):
 		# print('total score : ', person.score)
 	image = image.resize((600,600))
 	image = np.array(image)
-	return image, map_cord_to_part
+	return image, map_cord_to_part, heatmaps

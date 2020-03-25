@@ -138,4 +138,4 @@ class PoseNet:
     person.keyPoints = key_point_list
     person.score = total_score / num_key_points
 
-    return person
+    return person, heat_maps[0][:][:]
