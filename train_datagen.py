@@ -73,15 +73,13 @@ def generate_training_data(path_of_folder):
 		training_data = list_of_dictionaries_of_keypoints(list_of_sampled_keypoints)
 		for element in training_data:
 			print(element)
-			df = pd.DataFrame(dict(element))
-			df = df.T
-			df.to_csv('training_data.csv', mode='a', header=False)
+			if not all(x==[0,0] for x in element.values()):
+				df = pd.DataFrame(dict(element))
+				df = df.T
+				df.to_csv('training_data.csv', mode='a', header=False)
+
+# generate_training_data('/home/ubuntu/Human_activity_recognition/mock_dataset/')
 
 generate_training_data('/home/ubuntu/Human_activity_recognition/mock_dataset/')
-
-
-
-
-
 
 
