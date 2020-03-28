@@ -12,6 +12,7 @@ from train_datagen import video_sampler, list_of_dictionaries_of_keypoints
 import tensorflow as tf
 
 def preprocess_video(path_to_video):
+	no_of_videos_skipped = 0
 	list_of_sampled_keypoints_for_single_video, no_of_frames_extracted=video_sampler(path_to_video)
 	if no_of_frames_extracted < 9:
 		print("ERROR: Video too Short -> No.no_of_frames_extracted = {} ".format(no_of_frames_extracted))
