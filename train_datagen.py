@@ -48,7 +48,6 @@ def list_of_dictionaries_of_keypoints(list_of_sampled_keypoints):
 			if element not in before_preprocessing:
 				map_of_points_to_part['{}'.format(element)] = [0,0]
 		list_of_maps.append(map_of_points_to_part)
-		# print(map_of_points_to_part)
 	return list_of_maps
 # example usage of functions:
 '''list_of_sampled_keypoints=video_sampler('test_video.mp4')
@@ -67,7 +66,7 @@ def sort_dict(dictionary):
 	return new_dict
 
 
-def generate_training_data(path_of_folder):
+def generate_training_data(path_of_folder, name_of_csv):
 	no_of_videos_skipped = 0
 	# videos = [video for video in os.listdir(path_of_folder) if video.endswith('.mp4')]
 	videos = np.load('videos_of_guitar.npy')
@@ -75,33 +74,28 @@ def generate_training_data(path_of_folder):
 	# videos = videos[:300]
 	print(len(videos))
 	for video in videos:
-		duration = subprocess.check_output(['ffprobe', '-i', '{}'.format(os.path.join(path_of_folder,video)), '-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv=%s' % ("p=0")])
-		if int(float((str(duration)[2:-3]))) == 10:
 			# print(video)
-			list_of_sampled_keypoints_for_single_video, no_of_frames_extracted=video_sampler(os.path.join(path_of_folder,video))
-			if no_of_frames_extracted < 9:
-				print("Imprefection in extraction ===>>> {} ===>>> {}".format(no_of_frames_extracted, video))
-				no_of_videos_skipped = no_of_videos_skipped + 1
-			elif no_of_frames_extracted >=9:
-				list_of_sampled_keypoints_for_single_video = list_of_sampled_keypoints_for_single_video[:9]
-				sampled_frames_of_video = list_of_dictionaries_of_keypoints(list_of_sampled_keypoints_for_single_video)
-				for frame in sampled_frames_of_video:
-					# print(element)
-					df = pd.DataFrame(dict(frame))
-					df = df.T
-					df.to_csv('training_data_guitar.csv', mode='a', header=False)
-				# if all(x==[0,0] for x in frame.values()):
-					# print('Removed')
-					# videos.remove(video)
-					# break
+		list_of_sampled_keypoints_for_single_video, no_of_frames_extracted=video_sampler(os.path.join(path_of_folder,video))
+		if no_of_frames_extracted < 9:
+			print("Imprefection in extraction ===>>> {} ===>>> {}".format(no_of_frames_extracted, video))
+			no_of_videos_skipped = no_of_videos_skipped + 1
+		elif no_of_frames_extracted >=9:
+			list_of_sampled_keypoints_for_single_video = list_of_sampled_keypoints_for_single_video[:9]
+			sampled_frames_of_video = list_of_dictionaries_of_keypoints(list_of_sampled_keypoints_for_single_video)
+			for frame in sampled_frames_of_video:
+				if all(x==[0,0] for x in frame.values()):
+					print('Removed')
+					break
+				df = pd.DataFrame(dict(frame))
+				df = df.T
+				df.to_csv(f'{name_of_csv}.csv', mode='a', header=False)
+				
 	print(no_of_videos_skipped)
 	print('no of videos in training data = {}'.format(len(videos)-no_of_videos_skipped))
-	# print(len(videos))
-	# np.save('videos_of_yoga.npy', videos)
+
 			
 
 # generate_training_data('/home/ubuntu/kinetics-downloader/dataset/train/playing_guitar/')
-
 # video_sampler('test_video3.mp4')
 
 
