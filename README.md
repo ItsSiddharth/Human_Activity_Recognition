@@ -17,12 +17,12 @@ A Binary HAR classifier that can be trained and deployed in less than 10 lines o
 ## Architecture
 As this is a time series problem using an LSTM was an apparent choice.
 > The LSTM had to be taught the relative motion of how the body joints move for vertain action.
-```
-Dataset Used : <a href="https://deepmind.com/research/open-source/kinetics">Kinetic400</a>
-```
+
+* Dataset Used : <a href="https://deepmind.com/research/open-source/kinetics">Kinetic400</a>
+
 ### Preprocessing
 In preprocessing I have infered <a href="https://www.tensorflow.org/lite/models/pose_estimation/overview" >Posenet</a> (TF-lite model) using tf.Interpreter().
-1. Posenet returns a **HeatMap and an OffsetMap**.
+1. Posenet returns a **HeatMap** and an **OffsetMap**.
 2. Using this we extract the location of the 17 Keypoints/Body Joints that posenet detects.
 3. If a certain joint is not in frame it is assigned [0,0].
 4. From every video we sample 9 frames that are equally spaced.
@@ -86,3 +86,7 @@ The function takes 2 parameters **Path to CSV** and **No of samples in validatio
 ```
 Here we give in the X's and Y's along with the **NAME** by which you want the model to be saved.
 8. You can checkout how to infer it in the previous section.
+
+
+## LICENSE
+<a href="https://github.com/ItsSiddharth/Human_Activity_Recognition/blob/master/LICENSE">MIT</a>
