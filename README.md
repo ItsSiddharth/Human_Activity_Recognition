@@ -36,7 +36,7 @@ In preprocessing I have infered <a href="https://www.tensorflow.org/lite/models/
 2. So input shape for first LSTM becomes (9,34).
 3. The model is a 3 layer LSTM with 128 nodes each, along with Dropouts of 0.2 and 0.1 and a batch normalization.
 4. Which is followed by a Dense Layer of 32 nodes and an Output Layer of 1 node.
-<img src="./assets/model_summery.png" hieght="600" width="600" title="Model Summary">
+<img src="./assets/Pose_Estimation.png" hieght="600" width="800" title="Model Summary">
 
 ### Inference
 1. During inference we use Posenet again for preprocessing and pandas takes care of the rest.
