@@ -6,11 +6,12 @@ import time
 import pandas as pd
 import os
 import collections
+import subprocess
 
 list_of_parts = ['NOSE','LEFT_EYE','RIGHT_EYE','LEFT_EAR','RIGHT_EAR','LEFT_SHOULDER','RIGHT_SHOULDER','LEFT_ELBOW','RIGHT_ELBOW','LEFT_WRIST','RIGHT_WRIST','LEFT_HIP','RIGHT_HIP','LEFT_KNEE','RIGHT_KNEE','LEFT_ANKLE','RIGHT_ANKLE']
 list_of_indexes = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q']
 def video_sampler(path_to_video):
-	no_of_frames = 0
+	no_of_frames, no_of_frames_extracted = 0, 0
 	list_of_sampled_keypoints = []
 	cap = cv2.VideoCapture(path_to_video)
 	while True:
@@ -24,6 +25,7 @@ def video_sampler(path_to_video):
 				# You can visualise how a certain part is being observed by visualising the heat map.
 				# Just cv2.imshow('<frame_name>', heatmap[index_of_body_part])
 				no_of_frames = no_of_frames + 1
+				no_of_frames_extracted = no_of_frames_extracted + 1
 				cv2.imshow('Preview', image)
 				k = cv2.waitKey(27)
 				if k == ord('q'):
@@ -34,7 +36,7 @@ def video_sampler(path_to_video):
 		except:
 			break
 
-	return list_of_sampled_keypoints
+	return list_of_sampled_keypoints, no_of_frames_extracted
 def list_of_dictionaries_of_keypoints(list_of_sampled_keypoints):
 	map_of_points_to_part={}
 	list_of_maps = []
@@ -66,20 +68,41 @@ def sort_dict(dictionary):
 
 
 def generate_training_data(path_of_folder):
-	videos = [video for video in os.listdir(path_of_folder) if video.endswith('.mp4')]
+	no_of_videos_skipped = 0
+	# videos = [video for video in os.listdir(path_of_folder) if video.endswith('.mp4')]
+	videos = np.load('videos_of_guitar.npy')
+	videos = list(videos)
+	# videos = videos[:300]
 	print(len(videos))
 	for video in videos:
-		list_of_sampled_keypoints=video_sampler(video)
-		training_data = list_of_dictionaries_of_keypoints(list_of_sampled_keypoints)
-		for element in training_data:
-			print(element)
-			if not all(x==[0,0] for x in element.values()):
-				df = pd.DataFrame(dict(element))
-				df = df.T
-				df.to_csv('training_data.csv', mode='a', header=False)
+		duration = subprocess.check_output(['ffprobe', '-i', '{}'.format(os.path.join(path_of_folder,video)), '-show_entries', 'format=duration', '-v', 'quiet', '-of', 'csv=%s' % ("p=0")])
+		if int(float((str(duration)[2:-3]))) == 10:
+			# print(video)
+			list_of_sampled_keypoints_for_single_video, no_of_frames_extracted=video_sampler(os.path.join(path_of_folder,video))
+			if no_of_frames_extracted < 9:
+				print("Imprefection in extraction ===>>> {} ===>>> {}".format(no_of_frames_extracted, video))
+				no_of_videos_skipped = no_of_videos_skipped + 1
+			elif no_of_frames_extracted >=9:
+				list_of_sampled_keypoints_for_single_video = list_of_sampled_keypoints_for_single_video[:9]
+				sampled_frames_of_video = list_of_dictionaries_of_keypoints(list_of_sampled_keypoints_for_single_video)
+				for frame in sampled_frames_of_video:
+					# print(element)
+					df = pd.DataFrame(dict(frame))
+					df = df.T
+					df.to_csv('training_data_guitar.csv', mode='a', header=False)
+				# if all(x==[0,0] for x in frame.values()):
+					# print('Removed')
+					# videos.remove(video)
+					# break
+	print(no_of_videos_skipped)
+	print('no of videos in training data = {}'.format(len(videos)-no_of_videos_skipped))
+	# print(len(videos))
+	# np.save('videos_of_yoga.npy', videos)
+			
 
-# generate_training_data('/home/ubuntu/Human_activity_recognition/mock_dataset/')
+generate_training_data('/home/ubuntu/kinetics-downloader/dataset/train/playing_guitar/')
 
-generate_training_data('/home/ubuntu/Human_activity_recognition/mock_dataset/')
+# video_sampler('test_video3.mp4')
+
 
 
