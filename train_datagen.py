@@ -100,7 +100,7 @@ def generate_training_data(path_of_folder):
 	# np.save('videos_of_yoga.npy', videos)
 			
 
-generate_training_data('/home/ubuntu/kinetics-downloader/dataset/train/playing_guitar/')
+# generate_training_data('/home/ubuntu/kinetics-downloader/dataset/train/playing_guitar/')
 
 # video_sampler('test_video3.mp4')
 
