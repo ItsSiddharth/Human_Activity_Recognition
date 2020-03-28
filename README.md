@@ -8,7 +8,7 @@
 3. [Usage](#usage)
 
 ## Overview
-Most of the HAR models out there are just too heavy and cannot be deployed on cheap hardware like Raspberry Pi, Jetson Nano etc. Even in Laptops the inference timing is very high and causes a lot of lags.
+Most of the HAR models out there are just too heavy and cannot be deployed on cheap hardware like Raspberry Pi, Jetson Nano etc. Even in Laptops the inference time is very high and causes a lot of lag.
 This model efficiently solves this problem,
 ```
 A Binary HAR classifier that can be trained and deployed in less than 10 lines of code.
@@ -16,12 +16,12 @@ A Binary HAR classifier that can be trained and deployed in less than 10 lines o
 
 ## Architecture
 As this is a time series problem using an LSTM was an apparent choice.
-> The LSTM had to be taught the relative motion of how the body joints move for vertain action.
+> The LSTM had to be taught the relative motion of body joints for a certain action.
 
 * Dataset Used : <a href="https://deepmind.com/research/open-source/kinetics">Kinetic400</a>
 
 ### Preprocessing
-In preprocessing I have infered <a href="https://www.tensorflow.org/lite/models/pose_estimation/overview" >Posenet</a> (TF-lite model) using tf.Interpreter().
+In preprocessing I have inferred <a href="https://www.tensorflow.org/lite/models/pose_estimation/overview" >Posenet</a> (TF-lite model) using tf.Interpreter().
 1. Posenet returns a **HeatMap** and an **OffsetMap**.
 2. Using this we extract the location of the 17 Keypoints/Body Joints that posenet detects.
 3. If a certain joint is not in frame it is assigned [0,0].
@@ -40,11 +40,11 @@ In preprocessing I have infered <a href="https://www.tensorflow.org/lite/models/
 
 ### Inference
 1. During inference we use Posenet again for preprocessing and pandas takes care of the rest.
-2. Load in the model and pass on the preprocessed data into the model.
+2. Load in the model and pass on the preprocessed data to the model.
 3. The model will make a binary classification based on the 2 labels you trained it on.
 
 ## Usage
-### Infering the example models
+### Infering the example models given
 1. Use the script ```testing_model.py```.
 2. There are 2 models in the repo ```mwrestling_vs_guitar.model``` and ```guitar_vs_yoga.model```.
 3. In the below line insert the name of the model you want to infer.

@@ -1,5 +1,5 @@
-from training_functions import preprocessing_csv, shuffler, train_LSTM, get_final_data_for_model
-from train_datagen_functions import generate_training_data
+from functions.training_functions import preprocessing_csv, shuffler, train_LSTM, get_final_data_for_model
+from functions.train_datagen_functions import generate_training_data
 
 
 import numpy as np
