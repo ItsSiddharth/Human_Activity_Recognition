@@ -74,7 +74,7 @@ def shuffler(X_train, Y_train):
 
 
 
-def train_LSTM(X_train, Y_train, X_test, Y_test):
+def train_LSTM(X_train, Y_train, X_test, Y_test, NAME):
 	model = Sequential()
 	model.add(LSTM(128, input_shape=(X_train.shape[1:]), return_sequences=True))
 	model.add(Dropout(0.2))
@@ -97,7 +97,6 @@ def train_LSTM(X_train, Y_train, X_test, Y_test):
 
 	EPOCHS = 200
 	BATCH_SIZE = 64 
-	NAME = f"MODEL {EPOCHS}-{BATCH_SIZE}"
 	opt = tf.keras.optimizers.RMSprop(learning_rate=0.001, rho=0.9)
 	model.compile(
 	    loss='binary_crossentropy',

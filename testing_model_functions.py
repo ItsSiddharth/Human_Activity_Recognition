@@ -7,7 +7,7 @@ import pandas as pd
 import os
 import collections
 import subprocess
-from train_datagen import video_sampler, list_of_dictionaries_of_keypoints
+from train_datagen_functions import video_sampler, list_of_dictionaries_of_keypoints
 
 import tensorflow as tf
 
