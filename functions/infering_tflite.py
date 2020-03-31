@@ -1,25 +1,27 @@
 from PIL import Image, ImageDraw
 import cv2
 import numpy as np
-import posenet
+
+
+from functions.posenet import BodyPart, PoseNet
 
 
 MIN_CONFIDENCE = 0.40
 
 def Key_Point_Generator(image):
 	map_cord_to_part=[]
-	body_joints = [[posenet.BodyPart.LEFT_WRIST, posenet.BodyPart.LEFT_ELBOW],
-	               [posenet.BodyPart.LEFT_ELBOW, posenet.BodyPart.LEFT_SHOULDER],
-	               [posenet.BodyPart.LEFT_SHOULDER, posenet.BodyPart.RIGHT_SHOULDER],
-	               [posenet.BodyPart.RIGHT_SHOULDER, posenet.BodyPart.RIGHT_ELBOW],
-	               [posenet.BodyPart.RIGHT_ELBOW, posenet.BodyPart.RIGHT_WRIST],
-	               [posenet.BodyPart.LEFT_SHOULDER, posenet.BodyPart.LEFT_HIP],
-	               [posenet.BodyPart.LEFT_HIP, posenet.BodyPart.RIGHT_HIP],
-	               [posenet.BodyPart.RIGHT_HIP, posenet.BodyPart.RIGHT_SHOULDER],
-	               [posenet.BodyPart.LEFT_HIP, posenet.BodyPart.LEFT_KNEE],
-	               [posenet.BodyPart.LEFT_KNEE, posenet.BodyPart.LEFT_ANKLE],
-	               [posenet.BodyPart.RIGHT_HIP, posenet.BodyPart.RIGHT_KNEE],
-	               [posenet.BodyPart.RIGHT_KNEE, posenet.BodyPart.RIGHT_ANKLE]]
+	body_joints = [[BodyPart.LEFT_WRIST,BodyPart.LEFT_ELBOW],
+	               [BodyPart.LEFT_ELBOW,BodyPart.LEFT_SHOULDER],
+	               [BodyPart.LEFT_SHOULDER,BodyPart.RIGHT_SHOULDER],
+	               [BodyPart.RIGHT_SHOULDER, BodyPart.RIGHT_ELBOW],
+	               [BodyPart.RIGHT_ELBOW,BodyPart.RIGHT_WRIST],
+	               [BodyPart.LEFT_SHOULDER,BodyPart.LEFT_HIP],
+	               [BodyPart.LEFT_HIP,BodyPart.RIGHT_HIP],
+	               [BodyPart.RIGHT_HIP,BodyPart.RIGHT_SHOULDER],
+	               [BodyPart.LEFT_HIP,BodyPart.LEFT_KNEE],
+	               [BodyPart.LEFT_KNEE,BodyPart.LEFT_ANKLE],
+	               [BodyPart.RIGHT_HIP,BodyPart.RIGHT_KNEE],
+	               [BodyPart.RIGHT_KNEE,BodyPart.RIGHT_ANKLE]]
 
 	image = Image.fromarray(image, 'RGB')
 	draw = ImageDraw.Draw(image)
@@ -27,7 +29,7 @@ def Key_Point_Generator(image):
 		# image = cv2.imread('test.jpg')
 		# image = np.array(image)
 
-	Posenet = posenet.PoseNet(model_path="./posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite",
+	Posenet = PoseNet(model_path="functions/posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite",
 		                          image=image)
 	person, heatmaps = Posenet.estimate_pose()
 		# print((len(person.keyPoints)))

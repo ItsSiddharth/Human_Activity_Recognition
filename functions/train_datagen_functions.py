@@ -1,4 +1,4 @@
-from infering_tflite import Key_Point_Generator
+from functions.infering_tflite import Key_Point_Generator
 
 import cv2
 import numpy as np
@@ -16,14 +16,14 @@ def video_sampler(path_to_video):
 	cap = cv2.VideoCapture(path_to_video)
 	while True:
 		try:
-			_, frame = cap.read()
+			reader, frame = cap.read()
 			if no_of_frames%30 == 0:
 				frame = np.array(frame, dtype=np.uint8)
 				image, map_cords_to_part, heatmap = Key_Point_Generator(frame)
 				list_of_sampled_keypoints.append(map_cords_to_part)
-				# x, y, part
-				# You can visualise how a certain part is being observed by visualising the heat map.
-				# Just cv2.imshow('<frame_name>', heatmap[index_of_body_part])
+					# x, y, part
+					# You can visualise how a certain part is being observed by visualising the heat map.
+					# Just cv2.imshow('<frame_name>', heatmap[index_of_body_part])
 				no_of_frames = no_of_frames + 1
 				no_of_frames_extracted = no_of_frames_extracted + 1
 				cv2.imshow('Preview', image)

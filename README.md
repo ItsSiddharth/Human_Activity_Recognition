@@ -85,6 +85,7 @@ The function takes 2 parameters **Path to CSV** and **No of samples in validatio
 >> train_LSTM(X_train, Y_train, X_test, Y_test, name_of_the_model)
 ```
 Here we give in the X's and Y's along with the **NAME** by which you want the model to be saved.
+
 8. You can checkout how to infer it in the previous section.
 
 
