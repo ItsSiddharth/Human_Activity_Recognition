@@ -3,12 +3,20 @@
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/ItsSiddharth/context_search/blob/master/LICENSE)   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
 
 ## Content 
-1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Usage](#usage)
+1. [Example](#example)
+2. [Overview](#overview)
+3. [Architecture](#architecture)
+4. [Usage](#usage)
+
+## Example
+### Let's look at 2 examples
+1. Here is an example of recognising a person playing a guitar.
+<img src="./assets/guitar_example.gif" width="538" title="demo">
+2. Another example where its recognition of wrestling.
+<img src="./assets/wrestling_example.gif" width="538" title="demo1">
 
 ## Overview
-Most of the HAR models out there are just too heavy and cannot be deployed on cheap hardware like Raspberry Pi, Jetson Nano etc. Even in Laptops the inference time is very high and causes a lot of lag.
+Most of the HAR models out there are just too heavy and cannot be deployed on low power hardware like Raspberry Pi, Jetson Nano etc. Even in Laptops the inference time is very high and causes a lot of lag.
 This model efficiently solves this problem,
 ```
 A Binary HAR classifier that can be trained and deployed in less than 10 lines of code.
